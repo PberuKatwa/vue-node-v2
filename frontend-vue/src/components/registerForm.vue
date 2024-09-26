@@ -16,7 +16,15 @@ export default {
           password: this.password
         });
         console.log('Registration response:', response.data);
-    }
+
+        const res = await authenticationService.addUser({
+        userName:this.name,
+        userPassword: this.password
+      });
+      console.log('user add data:', res.data);
+    },
+    
+
   },
 
   /*
