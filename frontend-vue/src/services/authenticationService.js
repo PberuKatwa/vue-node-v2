@@ -9,5 +9,15 @@ export default {
   },
   getUser(){
     return api().get('users')
+  }, 
+  deleteUser(userId){
+    console.log('Authentication service: Sending registration request', userId);
+    return api().delete(`users/${userId}`)
+  },
+  getUserById(userID){
+    return api().get(`users/${userID}`)
+  },
+  editUserDetails(userId, userData){
+    return api().post(`users/${userId}`, userData)
   }
 }
