@@ -7,6 +7,9 @@ export default {
     return {
       usersList: [],
       password: '',
+      searchId:'',
+      userSearchList:{}
+
     };
   },
   
@@ -18,7 +21,7 @@ export default {
     try{
         const response = await authenticationService.getUser();
         this.usersList = response.data;
-        console.log('userlist:',this.usersList)
+        
     }
     catch{
         console.error('user list error:', error)
@@ -42,6 +45,14 @@ export default {
 
         
         this.$router.push({name:'user-detail',params:{ id:userId }})
+    },
+    async searchUser(userId){
+        const response = await authenticationService.getUserById(userId);
+
+        this.usersList = [response.data];
+        console.log('search list usersList:', this.usersList)
+        console.log('search results:', response.data)
+
     }
   }
   
@@ -50,7 +61,12 @@ export default {
 </script>
 
 <template>
-
+            <div class="search-box">
+                <input type="text" placeholder="search user" v-model="searchId">
+                <button class="btn btn-dark" @click="searchUser(searchId)"> 
+                    search <i class="fa-solid fa-magnifying-glass"></i> 
+                </button>
+            </div>
 <table>
         <caption>User Information</caption>
         <thead>
@@ -91,11 +107,29 @@ export default {
 body {
             font-family: Arial, sans-serif;
             margin: 20px;
+            
         }
+
+        .search-box{
+            margin:10px;
+            height:40px;
+            display:flex;
+            justify-content: center;
+            border-radius: 35px;
+            line-height: 1;
+            gap: 5px;
+        }
+
+        .search-box button{
+            
+            padding: 7px ;
+        }
+
 
         table {
             width: 100%;
             border-collapse: collapse;
+            
         }
 
         table, th, td {

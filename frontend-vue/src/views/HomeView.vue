@@ -1,10 +1,9 @@
 <script setup>
-
-import registerForm from '@/components/registerForm.vue';
+import HeroSection from '@/components/HeroSection.vue';
 </script>
 
 <template>
   <main>
-    <registerForm />
+    <HeroSection />
   </main>
 </template>

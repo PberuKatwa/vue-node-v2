@@ -9,9 +9,7 @@
                   
               <li> <RouterLink to="/about">About</RouterLink> </li>
     
-              <li><a href="#">Contact</a></li>
-
-              <li> <RouterLink to="/">Register</RouterLink> </li>
+              <li> <RouterLink to="/register">Register</RouterLink> </li>
                   
               <li> <RouterLink to="/list">List</RouterLink> </li>
               

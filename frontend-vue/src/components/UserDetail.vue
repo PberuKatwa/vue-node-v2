@@ -47,7 +47,10 @@ export default{
 </script>
 
 <template>
+
+
    <div class="container">
+
         <!-- Left Side (Headings) -->
         <div class="left">
             <div class="row">
@@ -128,18 +131,9 @@ export default{
 </template>
 
 <style scoped>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
 
-        .container {
+
+            .container {
             display: flex;
             max-width: 98vw;
             width: 100%;
