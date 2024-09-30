@@ -10,6 +10,8 @@
               <li> <RouterLink to="/about">About</RouterLink> </li>
     
               <li> <RouterLink to="/register">Register</RouterLink> </li>
+
+              <li> <RouterLink to="/product-registration">product registration</RouterLink> </li>
                   
               <li> <RouterLink to="/list">List</RouterLink> </li>
               

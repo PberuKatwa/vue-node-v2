@@ -6,6 +6,7 @@ const morgan = require('morgan');
 const { sequelize } = require('./models');
 const config = require('./config/config');
 const routes = require('./routes');
+const connectDb = require('./models/mongoDb')
 
 const app = express();
 
