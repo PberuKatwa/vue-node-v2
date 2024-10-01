@@ -1,10 +1,11 @@
 <script setup>
 
-import UserList from '@/components/UserList.vue';
+import ProductList from '@/components/ProductList.vue';
+
 </script>
 
 <template>
   <main>
-    <UserList />
+    <ProductList />
   </main>
 </template>

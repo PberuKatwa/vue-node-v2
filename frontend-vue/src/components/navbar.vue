@@ -11,9 +11,13 @@
     
               <li> <RouterLink to="/register">Register</RouterLink> </li>
 
+              <li> <RouterLink to="/login">Login</RouterLink> </li>
+
               <li> <RouterLink to="/product-registration">product registration</RouterLink> </li>
                   
               <li> <RouterLink to="/list">List</RouterLink> </li>
+
+              
               
           </ul>
       </nav>

@@ -1,5 +1,7 @@
 <script>
-import authenticationService from '@/services/authenticationService';
+import authServiceMongo from '@/services/authServiceMongo';
+import { mapActions } from 'vuex';
+
 
 export default {
   data() {
@@ -9,64 +11,27 @@ export default {
     };
   },
   methods: {
+    ...mapActions(['setToken']),
     async registerUser() {
-      console.log('Register button clicked');
-      console.log('Current data:', { name: this.name, password: this.password });
-      
-      if (!this.name || !this.password) {
-        console.error('Name or password is empty');
-        return;
+      console.log('button was clicked')
+
+        const res = await authServiceMongo.loginUser({
+        userName:this.name,
+        userPassword: this.password
+      });
+     
+      console.log('user add data:', res.data);
+
+      if(res.status === 201 && res.data){
+        const token = res.data
+        this.setToken(token)
+        console.log('login successful',token)
       }
+    },
+    
 
-      try {
-        console.log('Sending registration request');
-        const response = await authenticationService.register({
-          name: this.name,
-          password: this.password
-        });
-        console.log('Registration response:', response);
-        if (response.data) {
-          console.log('Registration successful:', response.data);
-          // Handle successful registration (e.g., redirect to login page or show success message)
-        } else {
-          console.error('Registration failed: Unexpected response format');
-        }
-      } catch (error) {
-        console.error('Registration error:', error);
-        if (error.response) {
-          // The request was made and the server responded with a status code
-          // that falls out of the range of 2xx
-          console.error('Error data:', error.response.data);
-          console.error('Error status:', error.response.status);
-          console.error('Error headers:', error.response.headers);
-        } else if (error.request) {
-          // The request was made but no response was received
-          console.error('No response received:', error.request);
-        } else {
-          // Something happened in setting up the request that triggered an Error
-          console.error('Error message:', error.message);
-        }
-      }
-    }
   },
-  mounted() {
-    console.log('Component mounted');
-  }
-  /*
-  watch:{
-    name(value){
-        
-    }
-  },
-  mounted(){
 
-    setTimeout( () =>{
-       this.name = 'welcome' 
-
-    },2000 )
-  }
-    */
-  
 };
 </script>
 
@@ -85,7 +50,7 @@ export default {
               <div class="col-12">
                 <div class="mb-5">
 
-                  <h2 class="h4 text-center">Registration</h2>
+                  <h2 class="h4 text-center">Login User</h2>
                   
                 </div>
               </div>
@@ -113,7 +78,7 @@ export default {
                   <div class="d-grid">
                     <button class="btn bsb-btn-xl btn-primary" 
                     @click="registerUser">
-                    Sign up
+                    Login
                 </button>
                   </div>
                 </div>

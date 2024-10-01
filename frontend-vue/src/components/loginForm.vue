@@ -1,5 +1,7 @@
 <script>
 import authServiceMongo from '@/services/authServiceMongo';
+import store from '@/stores/storePinia';
+import { mapActions } from 'pinia';
 
 
 export default {
@@ -10,14 +12,22 @@ export default {
     };
   },
   methods: {
+    ...mapActions(store, ['setToken']),
     async registerUser() {
       console.log('button was clicked')
 
-        const res = await authServiceMongo.addUser({
+        const res = await authServiceMongo.loginUser({
         userName:this.name,
         userPassword: this.password
       });
-      console.log('user add data:', res.data);
+     
+      console.log('access Token:', res.data);
+
+      if(res.status === 201 && res.data){
+        const token = res.data
+        this.setToken(token)
+        console.log('login successful',token)
+      }
     },
     
 
@@ -41,7 +51,7 @@ export default {
               <div class="col-12">
                 <div class="mb-5">
 
-                  <h2 class="h4 text-center">Registration</h2>
+                  <h2 class="h4 text-center">Login User</h2>
                   
                 </div>
               </div>
@@ -69,7 +79,7 @@ export default {
                   <div class="d-grid">
                     <button class="btn bsb-btn-xl btn-primary" 
                     @click="registerUser">
-                    Sign up
+                    Login
                 </button>
                   </div>
                 </div>

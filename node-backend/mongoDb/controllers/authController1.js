@@ -1,7 +1,6 @@
 const bcrypt = require('bcrypt');
 const User = require('../models/User');
-
-const Jwt = require('jsonwebtoken')
+const jwt = require('jsonwebtoken');
 
 const handleLogin = async (req, res) => {
     const { userName, userPassword } = req.body;
@@ -18,29 +17,27 @@ const handleLogin = async (req, res) => {
         // Evaluate password
         const match = await bcrypt.compare(userPassword, userFound.userPassword);
         if (match) {
-            // JWT creation would go here
+            // JWT creation
+            const accessToken = jwt.sign(
+                { "username": userFound.userName },
+                process.env.ACCESS_TOKEN_SECRET,
+                { expiresIn: '15m' }
+            );
+            const refreshToken = jwt.sign(
+                { "username": userFound.userName },
+                process.env.REFRESH_TOKEN_SECRET,
+                { expiresIn: '7d' }
+            );
 
-            const accessToken = Jwt.sign(
-                {"username":userFound.userName},
-                'MYJWTTOKEN',
-                {expiresIn:'20m'}
-            )
-            const refreshtoken =  Jwt.sign(
-                {"username":userFound.userName},
-                'MYJWTTOKEN',
-                {expiresIn:'35m'}
-            )
+            // Saving refreshToken with current user
+            userFound.refreshToken = refreshToken;
+            const result = await userFound.save();
+            console.log(result);
 
-            //saving refresh token
-            userFound.refreshToken = refreshtoken
-            const result = await userFound.save()
-            console.log(result)
+            // Send refreshToken as HTTP-only cookie
+            res.cookie('jwt', refreshToken, { httpOnly: true, sameSite: 'None', secure: true, maxAge: 24 * 60 * 60 * 1000 });
 
-            res.cookie('Jwt', refreshtoken, { httpOnly:true,
-                 sameSite:'None', secure:true, maxAge:2*60*60*1000 })
-
-            // return res.json({ "success": `${userName} logged in successfully` });
-            return res.status(201).json(accessToken)
+            return res.json({ accessToken });
         } else {
             return res.status(401).json({ "message": "Incorrect password" });
         }

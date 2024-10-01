@@ -1,30 +1,55 @@
 <script>
-import authServiceMongo from '@/services/authServiceMongo';
-
+import { mapActions } from 'vuex'
+import authServiceMongo from '@/services/authServiceMongo'
 
 export default {
   data() {
     return {
       name: '',
       password: '',
-    };
+      error: null
+    }
   },
   methods: {
+    ...mapActions(['setToken']),
     async registerUser() {
-      console.log('button was clicked')
-
-        const res = await authServiceMongo.addUser({
-        userName:this.name,
-        userPassword: this.password
-      });
-      console.log('user add data:', res.data);
+      console.log('Login button was clicked')
+      try {
+        const response = await authServiceMongo.loginUser({
+          userName: this.name,
+          userPassword: this.password
+        })
+        
+        if (response.status === 201 && response.data) {
+          // The response.data is now the access token
+          const token = response.data
+          // Dispatch the setToken action to store the token in Vuex
+          this.setToken(token)
+          console.log('Login successful, token stored in Vuex',token)
+          this.error = null
+          // You might want to redirect the user or update the UI here
+          // For example:
+          // this.$router.push('/dashboard')
+        } else {
+          this.error = 'Login failed. Please try again.'
+        }
+      } catch (error) {
+        console.error('Login error:', error)
+        if (error.response) {
+          // The request was made and the server responded with a status code
+          // that falls out of the range of 2xx
+          this.error = error.response.data.message || 'An error occurred during login'
+        } else if (error.request) {
+          // The request was made but no response was received
+          this.error = 'No response from server. Please try again later.'
+        } else {
+          // Something happened in setting up the request that triggered an Error
+          this.error = 'An error occurred. Please try again.'
+        }
+      }
     },
-    
-
   },
-
-};
-</script>
+}</script>
 
 <template>
 
@@ -41,7 +66,7 @@ export default {
               <div class="col-12">
                 <div class="mb-5">
 
-                  <h2 class="h4 text-center">Registration</h2>
+                  <h2 class="h4 text-center">Login User</h2>
                   
                 </div>
               </div>
@@ -69,7 +94,7 @@ export default {
                   <div class="d-grid">
                     <button class="btn bsb-btn-xl btn-primary" 
                     @click="registerUser">
-                    Sign up
+                    Login
                 </button>
                   </div>
                 </div>
