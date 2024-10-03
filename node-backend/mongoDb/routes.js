@@ -14,8 +14,16 @@ router.post('/logout', logoutController.logout )
 // router.post('/product',productController.createProduct)
 
 router.route('/product') 
-    .get(jwtVerification ,productController.getProducts)
+    .get(productController.getProducts)
     .post(productController.createProduct)
+
+router.route('/product/:id')
+    .get(productController.getProductId)
+
+router.route('/product/name/:name')
+    .get(productController.getProductByName)
+    .post(productController.updateProductByName)
+    .delete(productController.deleteproductByName)
 
 
 router.get(('/first'),(req,res) => {
@@ -25,3 +33,8 @@ router.get(('/first'),(req,res) => {
 )
 
 module.exports = router
+
+/* 
+ "_id": "66f82650e8dbaf20fb15f937"
+  "_id": "66f83102c059d781a2ffc925"
+*/

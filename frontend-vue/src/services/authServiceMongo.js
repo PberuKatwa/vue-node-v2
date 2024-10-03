@@ -19,5 +19,18 @@ export default{
         return apiMongo().post('logout',null,{
             headers:{'Authorization':`Bearer ${token}`}
         })
-    }
+    },
+    deleteProduct(productName){
+        return apiMongo().delete(`/product/name/${productName}`)
+    },
+    searchProduct(productName){
+        return apiMongo().get(`/product/name/${productName}`)
+    },
+    getProductByName(productName){
+        return apiMongo().get(`/product/name/${productName}`)
+    },
+    updateProductByName(productName,productDetails){
+        return apiMongo().post(`/product/name/${productName}`, productDetails)
+    },
+    
 }

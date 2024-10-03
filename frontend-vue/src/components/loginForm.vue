@@ -28,6 +28,9 @@ export default {
         this.setToken(token)
         console.log('login successful',token)
       }
+
+      this.name =''
+      this.password=''
     },
     
 
