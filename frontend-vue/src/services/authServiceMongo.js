@@ -14,5 +14,10 @@ export default{
         return apiMongo().get('product',{
             headers:{'Authorization':`Bearer ${token}`}
         })
+    },
+    logoutUser(token){
+        return apiMongo().post('logout',null,{
+            headers:{'Authorization':`Bearer ${token}`}
+        })
     }
 }

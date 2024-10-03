@@ -1,38 +1,37 @@
 <script>
-import authServiceMongo from '@/services/authServiceMongo';
-import store from '@/stores/storePinia';
-import { mapActions, mapState } from 'pinia';
+import authServiceMongo from '@/services/authServiceMongo'; // Import the service
+import store from '@/stores/storePinia'; // Import the store if you still need to clear the token
 
-export default{
-
-    computed:{
-    token(){
-        return store().token;
-    }
+export default {
+  computed: {
+    token() {
+      return store().token;  // Get the token from the store
     },
+  },
+  methods: {
+    async logoutUser() {
+      console.log('Logout button clicked');
 
-    methods:{
-        async logoutUser(){
-            console.log('button was clicked')
-            try{
-
-                if(this.token){
-                    const response = await authServiceMongo.logoutUser(this.token);
-                    console.log('logout successful', response)
-
-                    store().setToken(null)
-                }else{
-                    console.log('no token found')
-                }
-
-            }catch(error){
-                console.log('logout failed: ', error)
-            }
-           
+      try {
+        if (this.token) {
+          // Call the logoutUser function directly from the service
+          await authServiceMongo.logoutUser(this.token);
+          console.log('Logout successful');
+          
+          // Clear the token from the store
+          store().setToken(null);  
+          
+          // Optionally redirect to login page
+          this.$router.push('/login');
+        } else {
+          console.log('No token available');
         }
-    }
-
-}
+      } catch (error) {
+        console.log('Logout failed:', error);
+      }
+    },
+  },
+};
 
 </script>
 
@@ -65,6 +64,9 @@ export default{
       </nav>
      
   </template>
+
+
+
   
   <style scoped>
   

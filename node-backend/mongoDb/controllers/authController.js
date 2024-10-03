@@ -23,21 +23,9 @@ const handleLogin = async (req, res) => {
             const accessToken = Jwt.sign(
                 {"username":userFound.userName},
                 'MYJWTTOKEN',
-                {expiresIn:'20m'}
-            )
-            const refreshtoken =  Jwt.sign(
-                {"username":userFound.userName},
-                'MYJWTTOKEN',
-                {expiresIn:'35m'}
+                {expiresIn:'120m'}
             )
 
-            //saving refresh token
-            userFound.refreshToken = refreshtoken
-            const result = await userFound.save()
-            console.log(result)
-
-            res.cookie('Jwt', refreshtoken, { httpOnly:true,
-                 sameSite:'None', secure:true, maxAge:2*60*60*1000 })
 
             // return res.json({ "success": `${userName} logged in successfully` });
             return res.status(201).json(accessToken)

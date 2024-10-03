@@ -4,9 +4,11 @@ const productController = require('./controllers/productControllers');
 const registerController = require('./controllers/registerControllers')
 const authController = require('./controllers/authController')
 const jwtVerification = require('./middleware/verifyJWT')
+const logoutController = require('./controllers/logoutController')
 
 router.post('/profile', registerController.handleNewUser)
 router.post('/login',authController.handleLogin)
+router.post('/logout', logoutController.logout )
 
 // router.get('/product', jwtVerification ,productController.getProducts)
 // router.post('/product',productController.createProduct)
