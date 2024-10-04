@@ -14,10 +14,10 @@ export default {
       noResults:false
     };
   },
-  computed:{
-    computed: {
-    ...mapState(store, ['token', 'storeProductName'])
-  }
+  computed:{  
+    ...mapState(store, ['token', 'storeProductName']),
+    
+  
    
     
   },
@@ -28,7 +28,8 @@ export default {
         const response = await authServiceMongo.getProducts(this.token);
         this.productsList = response.data;
         this.allProductsList = response.data;
-        console.log('this is the data:',response.data)    
+        console.log('this is the data:',response.data)   
+        console.log('this is the token:',this.token)  
     }
     catch{
         console.error('user list error:', error)
@@ -58,7 +59,7 @@ export default {
         }
 
         try{
-            const response = await authServiceMongo.searchProduct(productName)
+            const response = await authServiceMongo.searchProduct(this.token ,productName)
             console.log('product found:', response.data)
             // this.productsList = response.data
 
@@ -121,7 +122,7 @@ export default {
         <caption>Product List</caption>
         <thead>
             <tr>
-                <th>ID</th>
+                
                 <th>Name</th>
                 <th>Description</th>
                 <th>Price</th>
@@ -133,7 +134,6 @@ export default {
         <tbody>
 
             <tr v-for="product in productsList" :key="product.id">
-                <td>{{ product._id }}</td>
                 <td>{{ product.productName }}</td>
                 <td>{{ product.productDescription }}</td>
                 <td>{{ product.productPrice }}</td>

@@ -23,14 +23,20 @@ export default{
     deleteProduct(productName){
         return apiMongo().delete(`/product/name/${productName}`)
     },
-    searchProduct(productName){
-        return apiMongo().get(`/product/name/${productName}`)
+    searchProduct(token, productName){
+        return apiMongo().get(`/product/name/${productName}`,
+            {headers:{'Authorization':`Bearer ${token}`} }
+        )
     },
-    getProductByName(productName){
-        return apiMongo().get(`/product/name/${productName}`)
+    getProductByName(token, productName){
+        return apiMongo().get(`/product/name/${productName}`,
+            {headers:{'Authorization':`Bearer ${token}`} }
+        )
     },
-    updateProductByName(productName,productDetails){
-        return apiMongo().post(`/product/name/${productName}`, productDetails)
+    updateProductByName(token,productName,productDetails){
+        return apiMongo().post(`/product/name/${productName}`, productDetails,
+            {headers:{'Authorization':`Bearer ${token}`} }
+        )
     },
     
 }

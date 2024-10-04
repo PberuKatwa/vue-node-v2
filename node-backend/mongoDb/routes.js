@@ -14,14 +14,14 @@ router.post('/logout', logoutController.logout )
 // router.post('/product',productController.createProduct)
 
 router.route('/product') 
-    .get(productController.getProducts)
-    .post(productController.createProduct)
+    .get(jwtVerification, productController.getProducts)
+    .post(jwtVerification, productController.createProduct)
 
 router.route('/product/:id')
     .get(productController.getProductId)
 
 router.route('/product/name/:name')
-    .get(productController.getProductByName)
+    .get(jwtVerification, productController.getProductByName)
     .post(productController.updateProductByName)
     .delete(productController.deleteproductByName)
 

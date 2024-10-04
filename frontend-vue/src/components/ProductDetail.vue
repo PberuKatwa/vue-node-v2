@@ -1,12 +1,14 @@
 <script >
 import authServiceMongo from '@/services/authServiceMongo';
 import store from '@/stores/storePinia';
+import { mapState } from 'pinia';
 
 export default{
     computed:{
         productName(){
             return store().storeProductName;
-        }
+        },
+        ...mapState(store,['token'])
     },
     data(){
         return{
@@ -18,7 +20,7 @@ export default{
         
     },
     async created(){
-        await this.getProduct()
+        await this.getProduct(this.token)
         
     },
     methods:{
@@ -34,7 +36,7 @@ export default{
             
 
             try{
-                const response = await authServiceMongo.getProductByName(localName)
+                const response = await authServiceMongo.getProductByName(this.token,localName)
                 this.products = response.data
                 console.log('response from server:', response.data)
                 console.log('product-dictionary:',this.product)
@@ -75,9 +77,6 @@ export default{
         <!-- Left Side (Headings) -->
         <div class="left">
             <div class="row">
-                <p>ID:</p>
-            </div>
-            <div class="row">
                 <p>Product Name:</p>
             </div>
             <div class="row">
@@ -93,9 +92,6 @@ export default{
 
         <!-- Right Side (Body/Values) -->
         <div class="right" >
-            <div class="row">
-                <p>{{ product._id }}</p>
-            </div>
             <div class="row">
                 <p>{{ product.productName }}</p>
             </div>
